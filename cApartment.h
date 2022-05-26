@@ -9,24 +9,24 @@ class cApartment
 	float square;
 	std::list <cPeople> residents;
 public:
-	cApartment(int number, int floor, float square) :number{ number }, floor{ floor }, square{ square }
+	cApartment(int number=0, int floor=0, float square=0) :number{ number }, floor{ floor }, square{ square }
 	{
-		//residents = new std::list <cPeople>;
+	//	residents = new std::list <cPeople>;
 	}
 	
-	cApartment() :cApartment(0, 0, 0) {}
+	//cApartment() :cApartment(0, 0, 0) {}
 
 	int   getNumber() const{ return number; }
 	int   getNloor()  const{ return floor; }
 	float getSquare() const{ return square; }
 
 	void setNumber(int n) { number = n; }
-	void setFloor(int f) { floor = f; }
+	void setFloor(int f)  { floor = f; }
 	void setSquare(float s) { square = s; }
 
-	void addResident(cPeople &p)
+	void addResident(cPeople presidents)
 	{
-		residents.push_back(p);
+		residents.push_back(presidents);
 	}
 
 	void delResident(cPeople p)
@@ -35,8 +35,7 @@ public:
 			if (r == p)
 			{
 				residents.remove(r);
-				//	remove();
-				r.~cPeople();
+				//r.~cPeople();
 			}
 			 
 	}

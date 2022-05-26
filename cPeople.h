@@ -3,6 +3,7 @@
 #include <iostream>
 #include <ctime>
 #include <time.h>
+
 //не нашла как работать с датой через строку
 class cPeople
 {
@@ -25,11 +26,11 @@ public:
 	}
 	cPeople() :cPeople("", "", "", initTm(1, 1, 1)) {};
 
-	cPeople(cPeople &p) :cPeople(*p.name, *p.secondName, *p.lastName, *p.dateOfBirthday) {};
+	cPeople(const cPeople &p) :cPeople(*p.name, *p.secondName, *p.lastName, *p.dateOfBirthday) {};
 
 	friend std::ostream& operator<<(std::ostream& out, const cPeople& people)
 	{
-		out << "ФИО :"<< *people.name;//<< " " << *people.secondName << " " << *people.lastName << " Дата рождения ";//<<printTm(people.dateOfBirthday)<< "\n";//
+		out << "ФИО :"<< *people.name<< " " << *people.secondName << " " << *people.lastName << " Дата рождения "<<printTm(people.dateOfBirthday)<< "\n";//
 
 		return out;
 	}
@@ -66,7 +67,7 @@ public:
 	{
 		tm tm;
 		tm.tm_mday = day;
-		tm.tm_mon = mon;
+		tm.tm_mon  = mon;
 		tm.tm_year = year;
 
 		return tm;
@@ -77,10 +78,9 @@ public:
 		return std::to_string(tm->tm_mday) + "." + std::to_string(tm->tm_mon) + "." + std::to_string(tm->tm_year);
 	}
 
-	//в идеале хотелось использовать метод перевод числа в знак и обратно
 	const bool operator==(const cPeople& pp)const
 	{
-		if ((name == pp.name) && (lastName == pp.lastName) && (secondName == pp.secondName))
+		if ((strcmp(name->c_str(), pp.name->c_str())==0) & (strcmp(lastName->c_str(), pp.lastName->c_str())==0) & (strcmp(secondName->c_str(), pp.secondName->c_str())==0))
 			return true;
 		return false;
 	}
