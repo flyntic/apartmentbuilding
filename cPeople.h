@@ -13,30 +13,44 @@ private:
 	std::string * secondName;
 	std::string * lastName;
 	tm *dateOfBirthday;
+	static int all_people;
 	static int count_all;
-public:
 
-	cPeople(const std::string name, std::string secondName, std::string lastName, tm dateOfBirthday)
+private:
+	cPeople(const int n, std::string name, std::string secondName, std::string lastName, tm dateOfBirthday) //в этом конструкторе используется id, поэтому он приватный
 	{
-		id = ++count_all;
+		if (n != -1)	all_people++;
+		if (n != -1)  id = n;
 		this->name = new std::string(name);
-		this->lastName= new std::string(lastName);
+		this->lastName = new std::string(lastName);
 		this->secondName = new std::string(secondName);
 		this->dateOfBirthday = new tm(dateOfBirthday);
+
+		std::cout << "Создан житель: " << *this;
 	}
+
+public:
+
+	cPeople(const std::string name, std::string secondName, std::string lastName, tm dateOfBirthday) :cPeople(++count_all, name, secondName, lastName, dateOfBirthday) {}
+
+	cPeople(const std::string name, std::string secondName, std::string lastName, int del) :cPeople((del==-1)?-1:++count_all, name, secondName, lastName, initTm(1,1,1)) {}
+
 	cPeople() :cPeople("", "", "", initTm(1, 1, 1)) {};
 
 	cPeople(const cPeople &p) :cPeople(*p.name, *p.secondName, *p.lastName, *p.dateOfBirthday) {};
 
 	friend std::ostream& operator<<(std::ostream& out, const cPeople& people)
 	{
-		out << "ФИО :"<< *people.name<< " " << *people.secondName << " " << *people.lastName << " Дата рождения "<<printTm(people.dateOfBirthday)<< "\n";//
+		out << people.id <<" ФИО :"<< *people.name<< " " << *people.secondName << " " << *people.lastName << " Дата рождения "<<printTm(people.dateOfBirthday)<< "\n";//
 
 		return out;
 	}
 	cPeople(const std::string name, std::string secondName, std::string lastName):cPeople(name,secondName,lastName,initTm(1,1,1))	{	}
 	~cPeople()
 	{
+	
+		std::cout << "Удален житель: " << *this;
+		if (id != -1) all_people--;
 		delete(name);
 		delete(lastName);
 		delete(secondName);
@@ -63,6 +77,12 @@ public:
 	{
 		return (count_all);
 	}
+
+	static int GetAllPeople()
+	{
+		return (all_people);
+	}
+
 	static tm initTm(int day, int mon, int year)
 	{
 		tm tm;
